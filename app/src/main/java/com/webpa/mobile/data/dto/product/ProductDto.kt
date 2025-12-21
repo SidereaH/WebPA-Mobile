@@ -1,9 +1,9 @@
-package com.webpa.mobile.data.dto
+package com.webpa.mobile.data.dto.product
 
-import java.util.Date
 
 data class ProductDto (
-    val id: Float,
+    val id: Long,
+    val marketplaceId: String,
     val name: String,
     val price: Float,
     val image: String,

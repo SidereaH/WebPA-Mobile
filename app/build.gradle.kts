@@ -45,20 +45,34 @@ android {
 }
 
 dependencies {
+
+    implementation("androidx.room:room-runtime:2.5.0") // Библиотека "Room"
+    ksp("androidx.room:room-compiler:2.5.0") // Кодогенератор
+    implementation("androidx.room:room-ktx:2.5.0") // Дополнительно для Kotlin Coroutines, Kotlin Flows
+
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
+
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.5.0")
     implementation("com.squareup.picasso:picasso:2.71828")
 
-    //noinspection GradleCompatible
-    implementation("com.android.support:design:28.0.0")
-    implementation("com.github.d-max:spots-dialog:1.1@aar")
 
 
     implementation(libs.compose.material3)
-    val nav_version = "2.9.6"
     //nabigation
+
+    implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
+
+    val nav_version = "2.9.6"
+
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     // Views/Fragments integration
     implementation("androidx.navigation:navigation-fragment:${nav_version}")
     implementation("androidx.navigation:navigation-ui:${nav_version}")

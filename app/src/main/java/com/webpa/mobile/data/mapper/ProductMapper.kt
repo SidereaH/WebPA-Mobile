@@ -1,11 +1,12 @@
 package com.webpa.mobile.data.mapper
 
-import com.webpa.mobile.data.dto.ProductDto
+import com.webpa.mobile.data.dto.product.ProductDto
 import com.webpa.mobile.domain.model.Product
 
 fun mapProduct(
     productDto: ProductDto,
 ) = Product(
+    id = productDto.id,
     name = productDto.name,
     description = productDto.description,
     price = productDto.price,
@@ -16,4 +17,5 @@ fun mapProduct(
     marketplace = productDto.marketplace,
     url = productDto.marketplace,
     imageUrl = productDto.image,
+    feedbacks = productDto.mainInfo.feedbacks
 )

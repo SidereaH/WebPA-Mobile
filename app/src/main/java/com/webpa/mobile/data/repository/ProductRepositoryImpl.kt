@@ -14,23 +14,17 @@ class ProductRepositoryImpl @Inject constructor(private val productApi : Product
             throw RuntimeException("Network error: ${response.code()}")
         }
 
-        val body = response.body() ?: emptyList()
-
-        return body.map { dto -> mapProduct(dto) }
+        val products = response.body()?.products
+        return products?.map { dto -> mapProduct(dto) } ?: emptyList()
     }
 
 
     override suspend fun getAllProducts(): List<Product> {
         val response = productApi.fetchAll()
-
         if (!response.isSuccessful) {
             throw RuntimeException("Network error: ${response.code()}")
         }
-
         val body = response.body() ?: emptyList()
-
         return body.map { dto -> mapProduct(dto) }
     }
-
-
 }
