@@ -1,129 +1,101 @@
-# 📱 Webpa Mobile — Android приложение для поиска товаров с маркетплейсов
 
-Android-приложение для поиска товаров с маркетплейсов, добавления в избранное и управления пользовательским профилем.
-Проект реализован с использованием **Clean Architecture**, **Jetpack Compose** и **MVVM**.
+# 📱 Webpa Mobile — Android приложение
+
+Android-клиент для сервиса Webpa: поиск товаров, избранное, авторизация и профиль пользователя.
+
+Приложение реализовано с использованием **Jetpack Compose**, **Clean Architecture** и **Single Source of Truth**.
 
 ---
 
-## 🚀 Возможности
+## ✨ Возможности
 
 * 🔍 Поиск товаров
-* ⭐ Добавление / удаление из избранного
+* ⭐ Добавление / удаление из избранного (Room)
 * 👤 Регистрация и авторизация пользователя
-* 🔐 JWT-авторизация + refresh token
-* 📦 Профиль пользователя
-* 💾 Сохранение сессии (DataStore)
-* ⚡ Реактивный UI (StateFlow)
-* 🧭 Навигация с авторизационными графами
+* 🔐 JWT-сессия (access / refresh token)
+* 🙍‍♂️ Профиль пользователя
+* 🧭 Навигация с защитой авторизованных экранов
+* ⚡ Реактивный UI на StateFlow
 
 ---
 
 ## 🎥 Демонстрация работы
 
-
 https://github.com/user-attachments/assets/a0e1a6b4-4797-48d2-8c8b-1fb8fc47560f
 
 ---
 
-## 🏗 Архитектура
+## 🧱 Архитектура
 
-Проект построен по принципам **Clean Architecture + MVVM**.
-
-### Слои
+Проект построен по принципам **Clean Architecture**:
 
 ```
-presentation/
- ├─ screens (Compose UI)
- ├─ viewmodels
- └─ navigation
+data/
+ ├─ api        // Retrofit API
+ ├─ dao        // Room DAO
+ ├─ datastore  // DataStore (Session)
+ ├─ dto        // Network models
+ ├─ repository // Impl репозиториев
 
 domain/
- ├─ models
- ├─ usecases
- ├─ repository interfaces
- └─ datastore interface
+ ├─ model      // Business models
+ ├─ repository // Interfaces
+ ├─ usecase    // UseCases
+ ├─ datastore  // SessionStore interface
 
-data/
- ├─ api (Retrofit)
- ├─ repository implementations
- ├─ mappers
- ├─ datastore (SessionStore)
- └─ dto
-```
-
-### Поток данных
-
-```
-UI (Compose)
- ↓
-ViewModel (StateFlow)
- ↓
-UseCase
- ↓
-Repository (interface)
- ↓
-Data layer (API / DataStore)
+presentation/
+ ├─ auth       // Login / Register
+ ├─ profile    // Profile
+ ├─ search     // Search
+ ├─ favorites  // Favorites
+ ├─ navigation // NavGraph
+ ├─ components // UI components
 ```
 
 ---
 
-## 🧩 Используемые технологии
+## 🧠 Single Source of Truth
 
-### Android
+В приложении строго соблюдён принцип **Single Source of Truth**:
 
-* **Kotlin**
+* 🔐 **Сессия**
+  → `DataStore (SessionStore)`
+* ⭐ **Избранное**
+  → `Room Database`
+* 🖥 **UI-состояние**
+  → `ViewModel + StateFlow`
+
+UI **не хранит состояние**, а только подписывается на него.
+
+---
+
+## 🛠 Используемые технологии
+
+### Android / UI
+
 * **Jetpack Compose**
-* **Navigation Compose**
 * **Material 3**
-* **StateFlow / Coroutines**
+* **Navigation Compose**
+* **Coil** (загрузка изображений)
 
-### Архитектура
+### Архитектура и состояние
 
 * **MVVM**
+* **StateFlow / Flow**
 * **Clean Architecture**
 * **Single Source of Truth**
 
-### DI / Data
+### Data
 
-* **Hilt**
-* **Retrofit**
+* **Retrofit 2**
+* **Gson**
 * **Room**
-* **DataStore**
+* **DataStore Preferences**
 
-### Backend
+### DI
 
-* **Spring Boot** [SidereaH/WebPA-Back](https://github.com/SidereaH/WebPA-Back/tree/latest)
-* **JWT (access + refresh)**
-* **PostgreSQL**
-
----
-
-## 🔐 Авторизация
-
-* Access token + Refresh token
-* Refresh хранится в DataStore
-* UserId сохраняется при логине
-* При старте приложения определяется `isAuthorized`
-* Навигация делится на:
-
-    * `auth graph`
-    * `main graph`
-
----
-
-## 🧭 Навигация
-
-```
-RootNavGraph
- ├─ auth
- │   ├─ login
- │   └─ register
- └─ main
-     ├─ search
-     ├─ favorites
-     ├─ profile
-     └─ product_details/{id}
-```
+* **Dagger Hilt**
+* **KSP**
 
 ---
 
@@ -131,96 +103,48 @@ RootNavGraph
 
 ### Требования
 
-* Android Studio Hedgehog / Iguana
-* JDK 17
-* Android SDK 34+
+* Android Studio **Narwhal (2025.1.3)**
+* Kotlin **K2**
+* JDK **11+**
+* Min SDK **26**
 
-### Запуск
+### Запуск через AndroidStudio
 
 ```bash
-git clone https://github.com/username/webpa-mobile.git
+git clone https://github.com/your-username/webpa-mobile.git
 cd webpa-mobile
 ```
 
-1. Открыть проект в Android Studio
-2. Sync Gradle
-3. Запустить на эмуляторе или устройстве
+Открыть проект в **Android Studio** → `Run`
+
+## 🛠 Запуск через Gradle (без Android Studio)
+
+```bash
+./gradlew clean assembleDebug
+```
+
+APK будет доступен по пути:
+```
+app/build/outputs/apk/debug/app-debug.apk
+```
+---
+
+## 🔐 Авторизация
+
+* JWT access + refresh tokens
+* refresh token хранится в `DataStore`
+* защищённая навигация:
+
+  * неавторизованный → auth-граф
+  * авторизованный → main-граф
 
 ---
 
 ## 📂 Структура репозитория
 
-```
-app/
- ├─ data/
- ├─ domain/
- ├─ presentation/
- └─ di/
-
-docs/
- ├─ screenshots
- └─ demo.mp4
-```
+* Чёткое разделение слоёв
+* Нет зависимостей domain → data
+* DI вынесен в отдельные модули
+* Все экраны — Compose
 
 ---
-
-## 🧠 Что реализовано осознанно
-
-* ❌ Domain слой **не зависит от data**
-* ❌ UI не знает про Retrofit / DataStore
-* ✅ UseCase = 1 действие
-* ✅ Навигация изолирована
-* ✅ Состояния экранов (Loading / Error / Success)
-
----
-
-## 📝 Коммиты
-
-Коммиты оформлены осмысленно:
-
-```
-feat: add auth flow with jwt
-feat: implement profile screen
-feat: favorites feature with room
-refactor: clean navigation graph
-fix: session restore on app start
-```
-
----
-
-## 📌 GitHub Issues
-
-* `Demo` — скринкаст работы приложения
-* `Architecture` — описание архитектурных решений
-* `UI polish` — доработка интерфейса
-
----
-
-## 👤 Автор
-
-**[Твоё имя]**
-Android Developer
-Telegram: @username
-GitHub: [https://github.com/username](https://github.com/username)
-
----
-
-## ✅ Итог
-
-Проект демонстрирует:
-
-* уверенное владение Android-стеком
-* понимание архитектуры
-* работу с авторизацией
-* современный UI на Compose
-
----
-
-Если хочешь — дальше можем:
-
-* ✨ дополировать UI (анимации, shimmer)
-* 🧪 добавить unit-тесты
-* 📦 подготовить проект под портфолио / собес
-* 🧠 написать architecture decision record (ADR)
-
-скажи — идём дальше или **фиксируем как финал** 🏁
