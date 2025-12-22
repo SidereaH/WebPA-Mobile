@@ -42,8 +42,8 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = AuthUiState.Loading
             try {
-                signUpUseCase(SignUpData(username, email, phone, password))
-                _uiState.value = AuthUiState.Authorized
+                val user = signUpUseCase(SignUpData(username, email, phone, password))
+                _uiState.value = AuthUiState.Registered
             } catch (e: Exception) {
                 _uiState.value = AuthUiState.Error(e.message ?: "Ошибка регистрации")
             }

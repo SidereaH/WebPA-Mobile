@@ -29,6 +29,7 @@ import com.webpa.mobile.presentation.components.productcard.ProductsSkeletonList
 fun SearchScreen(
     viewModel: SearchViewModel = hiltViewModel(),
     onProductClick: (Long) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val query = viewModel.query.collectAsState()
@@ -38,9 +39,9 @@ fun SearchScreen(
     val favoriteIds by viewModel.favoriteIds.collectAsState()
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp, vertical = 20.dp)
     ) {
         OutlinedTextField(
             value = query.value,

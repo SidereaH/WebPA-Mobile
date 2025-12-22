@@ -38,8 +38,8 @@ fun RegisterScreen(
     var password by remember { mutableStateOf("") }
 
     LaunchedEffect(uiState) {
-        if (uiState is AuthUiState.Authorized) {
-            onSuccess()
+        if (uiState is AuthUiState.Registered) {
+            onBackClick()
         }
     }
 

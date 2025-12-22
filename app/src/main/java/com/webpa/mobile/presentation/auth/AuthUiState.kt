@@ -5,4 +5,5 @@ sealed class AuthUiState {
     object Loading : AuthUiState()
     object Authorized : AuthUiState()
     data class Error(val message: String) : AuthUiState()
+    object Registered : AuthUiState()
 }

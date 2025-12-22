@@ -6,7 +6,6 @@ import com.webpa.mobile.presentation.search.SearchUiState
 
 sealed class ProfileUiState {
     object Loading : ProfileUiState()
-    object Error : ProfileUiState()
-    object NotAuthorized : ProfileUiState()
+    data class Error(val message: String) : ProfileUiState()
     data class Success(val user: User) : ProfileUiState()
 }

@@ -1,7 +1,6 @@
 package com.webpa.mobile.presentation.navigation
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
@@ -13,10 +12,8 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.webpa.mobile.presentation.auth.LoginScreen
 import com.webpa.mobile.presentation.auth.RegisterScreen
-import com.webpa.mobile.presentation.components.AppTopBar
 import com.webpa.mobile.presentation.components.MainScaffold
 import com.webpa.mobile.presentation.favorites.FavoritesScreen
-import com.webpa.mobile.presentation.products.ProductsScreen
 import com.webpa.mobile.presentation.products.details.ProductDetailsScreen
 import com.webpa.mobile.presentation.profile.ProfileScreen
 import com.webpa.mobile.presentation.search.SearchScreen
@@ -84,7 +81,8 @@ fun NavGraphBuilder.mainNavGraph(
                         navController.navigate(
                             Screens.ProductDetails.createRoute(id)
                         )
-                    }
+                    },
+                    modifier = Modifier.padding(padding)
                 )
             }
         }
@@ -96,7 +94,8 @@ fun NavGraphBuilder.mainNavGraph(
                         navController.navigate(
                             Screens.ProductDetails.createRoute(id)
                         )
-                    }
+                    },
+                    modifier = Modifier.padding(padding)
                 )
             }
         }
@@ -108,9 +107,11 @@ fun NavGraphBuilder.mainNavGraph(
                         navController.navigate("auth") {
                             popUpTo("main") { inclusive = true }
                         }
-                    }
+                    },
+                    modifier = Modifier.padding(padding)
                 )
             }
+
         }
 
         composable(

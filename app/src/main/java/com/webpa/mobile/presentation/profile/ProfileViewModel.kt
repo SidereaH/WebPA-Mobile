@@ -15,11 +15,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val sessionStore: SessionStore,
-    private val getUserByIdUseCase: GetUserByIdUseCase
+    private val getUserByIdUseCase: GetUserByIdUseCase,
+    private val sessionStore: SessionStore
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
+    private val _uiState =
+        MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
+
     val uiState: StateFlow<ProfileUiState> = _uiState
 
     init {
@@ -28,17 +30,19 @@ class ProfileViewModel @Inject constructor(
 
     private fun loadProfile() {
         viewModelScope.launch {
-            val userId = sessionStore.getUserId()
-                ?: run {
-                    _uiState.value = ProfileUiState.NotAuthorized
-                    return@launch
-                }
-
             try {
-                val user = getUserByIdUseCase(userId)
-                _uiState.value = ProfileUiState.Success(user)
+                val userId = sessionStore.getUserId()
+                if (userId != null){
+                    val user = getUserByIdUseCase(userId)
+                    _uiState.value = ProfileUiState.Success(user)
+                }
+                else{
+                    throw Exception("Отсутствует UserId")
+                }
             } catch (e: Exception) {
-                _uiState.value = ProfileUiState.Error
+                _uiState.value = ProfileUiState.Error(
+                    e.message ?: "Ошибка загрузки профиля"
+                )
             }
         }
     }
@@ -46,7 +50,6 @@ class ProfileViewModel @Inject constructor(
     fun logout() {
         viewModelScope.launch {
             sessionStore.clear()
-            _uiState.value = ProfileUiState.NotAuthorized
         }
     }
 }

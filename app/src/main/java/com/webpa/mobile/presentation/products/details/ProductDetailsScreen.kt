@@ -47,7 +47,7 @@ import com.webpa.mobile.presentation.components.AppTopBar
 @Composable
 fun ProductDetailsScreen(
     onBackClick: () -> Unit,
-    viewModel: ProductDetailsViewModel = hiltViewModel()
+    viewModel: ProductDetailsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
