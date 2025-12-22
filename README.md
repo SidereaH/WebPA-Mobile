@@ -117,7 +117,7 @@ cd webpa-mobile
 
 Открыть проект в **Android Studio** → `Run`
 
-## 🛠 Запуск через Gradle (без Android Studio)
+### 🛠 Запуск через Gradle (без Android Studio)
 
 ```bash
 ./gradlew clean assembleDebug
