@@ -111,7 +111,7 @@ UI **не хранит состояние**, а только подписыва�
 ### Запуск через AndroidStudio
 
 ```bash
-git clone https://github.com/your-username/webpa-mobile.git
+git clone https://github.com/SidereaH/WebPA-Mobile
 cd webpa-mobile
 ```
 
